@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+[DefaultExecutionOrder(-100)]
     public class ServiceLocator : Singleton<ServiceLocator>
     {
         private Dictionary<Type, MonoBehaviour> services;
