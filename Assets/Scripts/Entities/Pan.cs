@@ -18,12 +18,14 @@ public class Pan : MonoBehaviour
     private PanManager _panManager;
     private bool _panSelected;
     private InputManagerService _inputManagerService;
+    private GameManagerService _gameManagerService;
     private bool _isFlipping = false;
 
     private void Awake()
     {
         _panManager = ServiceLocator.instance.GetService<PanManager>();
         _inputManagerService = ServiceLocator.instance.GetService<InputManagerService>();
+        _gameManagerService = ServiceLocator.instance.GetService<GameManagerService>();
     }
     
 
@@ -77,16 +79,13 @@ public class Pan : MonoBehaviour
 
     public void AddFood()
     {
-        
-        
-        
         _currentFood = Instantiate(foodPrefab);
         _currentFood.transform.position = foodSpawnPoint.position;
 
         _currentFood.transform.DOScale(0, 0.5f).From().SetEase(Ease.OutElastic, .8f);
         
         //test line only
-        _currentFood.SetFoodAndStartCooking(20,15,18);
+        _currentFood.SetFoodAndStartCooking(_gameManagerService._timeToBurn,_gameManagerService._timeToCookMin,_gameManagerService._timeToCookMax);
         OnFoodAdded?.Invoke(_currentFood);
     }
 

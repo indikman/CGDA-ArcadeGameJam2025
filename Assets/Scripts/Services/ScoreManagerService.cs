@@ -16,16 +16,23 @@ public class ScoreManagerService : Singleton<ScoreManagerService>
     [SerializeField]private int ScoreNotCooked = -10;
     [SerializeField] private int bonusMultiplier = 4;
     
+    
+    
     [Header("Penalties")]
     [SerializeField] private int penaltyNotCooked = 1;
     [SerializeField] private int penaltyBurned = 5;
     [SerializeField] private int penaltyBurnedOneSide = 2;
+
     
     public event Action<int> OnScoreUpdated;
     public event Action<int> OnBonusAdded;
     public event Action<int> OnPenalty;
     public event Action<int, int> OnPanCakeAdded;
+    public event Action<FoodState> OnFoodAdded;
     public event Action OnDayStarted;
+
+    public ComboTimer ComboTimer;
+    
 
     public void AddScoreForFood(FoodState stateOfFood)
     {
@@ -39,12 +46,20 @@ public class ScoreManagerService : Singleton<ScoreManagerService>
                 score += ScoreCookedOneSide;
                 score += day;
                 _currentPanCakes++;
+                
                 OnPanCakeAdded?.Invoke(_currentPanCakes, _requiredPanCakes);
                 break;
             case FoodState.CookedBothSides:
                 score += ScoreCookedBothSides;
                 score += day;
                 _currentPanCakes++;
+                if (ComboTimer.IsCombo())
+                {
+                    var bonus = _currentPanCakes * bonusMultiplier; 
+                    score += bonus;
+                    OnBonusAdded?.Invoke(bonus);
+                }
+                ComboTimer.ResetCombo();
                 OnPanCakeAdded?.Invoke(_currentPanCakes, _requiredPanCakes);
                 break;
             case FoodState.OneSideBurned:
@@ -59,15 +74,9 @@ public class ScoreManagerService : Singleton<ScoreManagerService>
                 throw new ArgumentOutOfRangeException(nameof(stateOfFood), stateOfFood, null);
         }
 
-        if (_currentPanCakes > _requiredPanCakes)
-        {
-            //bonus
-            var bonus = (_currentPanCakes - _requiredPanCakes) * bonusMultiplier; 
-            score += bonus;
-            OnBonusAdded?.Invoke(bonus);
-        }
-
         score = Math.Max(0, score);
+
+        OnFoodAdded?.Invoke(stateOfFood);
         OnScoreUpdated?.Invoke(score);
     }
 
@@ -92,5 +101,10 @@ public class ScoreManagerService : Singleton<ScoreManagerService>
     public void SetRequriedPanCakes(int requiredPanCakes)
     {
         _requiredPanCakes = requiredPanCakes;
+    }
+
+    public string GetScore()
+    {
+        return score.ToString();
     }
 }

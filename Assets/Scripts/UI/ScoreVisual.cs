@@ -19,16 +19,30 @@ public class ScoreVisual : MonoBehaviour
     private void Awake()
     {
         _scoreManagerService = ServiceLocator.instance.GetService<ScoreManagerService>();
+        scoreBonusText.text = "";
     }
     
     private void OnEnable()
     {
         _scoreManagerService.OnScoreUpdated += OnScoreUpdated;
+        _scoreManagerService.OnBonusAdded += OnBonusAdded;
     }
-    
+
+    private void OnBonusAdded(int obj)
+    {
+        scoreBonusText.text = $"Bonus! +{obj}";
+        
+        scoreBonusText.transform.DOPunchScale(0.5f * Vector3.one, 0.5f, 10, 1f).OnComplete(
+            () =>
+            {
+                scoreBonusText.text = "";
+            });
+    }
+
     private void OnDisable()
     {
         _scoreManagerService.OnScoreUpdated -= OnScoreUpdated;
+        _scoreManagerService.OnBonusAdded -= OnBonusAdded;
     }   
     
     private void OnScoreUpdated(int score)
