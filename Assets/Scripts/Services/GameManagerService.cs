@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerService : MonoBehaviour
 {
-    public float _timeToBurn { get; private set; } = 5f;
-    public float _timeToCookMin { get; private set; } = 3.5f;
-    public float _timeToCookMax { get; private set; } = 4.1f;
+    public float _timeToBurn { get; private set; } = 12f;
+    public float _timeToCookMin { get; private set; } = 6.5f;
+    public float _timeToCookMax { get; private set; } = 9f;
    // public int requiredPanCakes { get; private set; } = 10;
     
     private ScoreManagerService _scoreManagerService;
