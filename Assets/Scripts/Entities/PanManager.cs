@@ -68,9 +68,9 @@ public class PanManager : MonoBehaviour
     {
         var newPan = Instantiate(panPrefab);
 
-        newPan.transform.DOMoveY(-10, .5f).From().SetEase(Ease.OutElastic, 1f);
-        
         newPan.transform.localPosition = new Vector3(originPanPosition.x + panSpacing * pans.Count, originPanPosition.y, 0);
+
+        newPan.transform.DOMoveY(-10, .5f).From().SetEase(Ease.OutElastic, 1f);
         
         pans.Add(newPan);
         OnPanAdded?.Invoke(newPan);

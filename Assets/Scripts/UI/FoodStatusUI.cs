@@ -30,7 +30,9 @@ public class FoodStatusUI : MonoBehaviour
 
     private void OnFlipping(bool flip)
     {
-        progressCanvas.gameObject.SetActive(flip);
+        if(!_currentFood) return;
+        
+        progressCanvas.gameObject.SetActive(!flip);
     }
 
     private void OnDisable()

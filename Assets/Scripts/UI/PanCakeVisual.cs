@@ -37,8 +37,8 @@ public class PanCakeVisual : MonoBehaviour
     private void OnFoodFlipped()
     {
         // food flip animation
-        transform.DOJump(transform.position, 2, 1, 1f);
-        transform.DOScaleY(_yScale * -1, 0.5f).SetEase(Ease.InOutSine).SetLoops(2, LoopType.Yoyo);
+        transform.DOJump(transform.position, 3, 1, .6f);
+        transform.DOScaleY(_yScale * -1, 0.2f).SetEase(Ease.OutSine).SetLoops(2, LoopType.Yoyo);
     }
 
     private void Start()
