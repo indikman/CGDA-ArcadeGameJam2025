@@ -47,6 +47,11 @@ public class CustomTimer
     {
         return _timer / _maxTime;
     }
+    
+    public float GetTimeLeft()
+    {
+        return _timer;
+    }
         
     public void SetTimer(float timeValue)
     {

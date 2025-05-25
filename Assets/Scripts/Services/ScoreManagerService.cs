@@ -16,8 +16,14 @@ public class ScoreManagerService : Singleton<ScoreManagerService>
     [SerializeField]private int ScoreNotCooked = -10;
     [SerializeField] private int bonusMultiplier = 4;
     
+    [Header("Penalties")]
+    [SerializeField] private int penaltyNotCooked = 1;
+    [SerializeField] private int penaltyBurned = 5;
+    [SerializeField] private int penaltyBurnedOneSide = 2;
+    
     public event Action<int> OnScoreUpdated;
     public event Action<int> OnBonusAdded;
+    public event Action<int> OnPenalty;
     public event Action<int, int> OnPanCakeAdded;
     public event Action OnDayStarted;
 
@@ -27,6 +33,7 @@ public class ScoreManagerService : Singleton<ScoreManagerService>
         {
             case FoodState.NotCooked:
                 score += ScoreNotCooked;
+                OnPenalty?.Invoke(penaltyNotCooked);
                 break;
             case FoodState.CookedOneSideOnly:
                 score += ScoreCookedOneSide;
@@ -42,9 +49,11 @@ public class ScoreManagerService : Singleton<ScoreManagerService>
                 break;
             case FoodState.OneSideBurned:
                 score += ScoreBurnedOneSide;
+                OnPenalty?.Invoke(penaltyBurnedOneSide);
                 break;
             case FoodState.Burned:
                 score += ScoreBurned;
+                OnPenalty?.Invoke(penaltyBurned);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(stateOfFood), stateOfFood, null);

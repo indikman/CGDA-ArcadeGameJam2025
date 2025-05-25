@@ -97,7 +97,7 @@ public class Pan : MonoBehaviour
         OnFoodDelivered?.Invoke(_currentFood);
         
         //test
-        Destroy(_currentFood.gameObject);
+        //Destroy(_currentFood.gameObject);
         _currentFood = null;
         
     }

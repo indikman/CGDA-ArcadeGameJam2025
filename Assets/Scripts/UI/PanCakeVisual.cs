@@ -28,6 +28,8 @@ public class PanCakeVisual : MonoBehaviour
     private float _maxCookRatio;
 
     private float _yScale;
+
+    private Vector3 _upperRightCorner;
     
     private void OnEnable()
     {
@@ -39,10 +41,11 @@ public class PanCakeVisual : MonoBehaviour
     private void OnFoodDelivered(FoodState obj)
     {
         //run towards up
-        transform.DOMove(new Vector2(Random.Range(-10,Screen.width+10), Screen.height+10), 10f).SetEase(Ease.OutQuad).OnComplete(
+        transform.DORotate(Vector3.forward * Random.Range(0, 360), 1f);
+        transform.DOMove(new Vector2(Random.Range(-10,_upperRightCorner.x+10), _upperRightCorner.y+10), 1f).SetEase(Ease.OutQuad).OnComplete(
             () =>
             {
-               // GameObject.Destroy(food);
+                Destroy(gameObject,.5f);
             });
     }
 
@@ -58,6 +61,9 @@ public class PanCakeVisual : MonoBehaviour
     {
         _minCookRatio = food.cookThresholdMin / food.timeToBurn;
         _maxCookRatio = food.cookThresholdMax / food.timeToBurn;
+        
+        _upperRightCorner = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, Camera.main.nearClipPlane));
+
 
         _yScale = transform.localScale.y;
     }
