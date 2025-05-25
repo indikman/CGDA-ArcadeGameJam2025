@@ -692,6 +692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a52081915ea1c54db70bae339577e0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panPositionOffset: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -31,6 +31,7 @@ public class PanManager : MonoBehaviour
         _inputManagerService.OnNext += NextPan;
         _inputManagerService.OnPrevious += PreviousPan;
         
+        
     }
 
     private void OnDisable()
@@ -51,6 +52,7 @@ public class PanManager : MonoBehaviour
     {
         foreach (var pan in pans)
         {
+            pan.ThrowFood();
             Destroy(pan.gameObject);
         }
         

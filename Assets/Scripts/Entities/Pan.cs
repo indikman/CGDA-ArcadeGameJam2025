@@ -4,62 +4,119 @@ using UnityEngine;
 public class Pan : MonoBehaviour
 {
     [SerializeField] private GameObject panSelectionIndicator;
+    [SerializeField] private Food foodPrefab;
+    [SerializeField] private Transform foodSpawnPoint;
     
     public Food _currentFood { get; private set; }
-
-    public event Action<Food> OnFoodCompleted;
+    
+    public event Action<Food> OnFoodAdded;
+    public event Action<Food> OnFoodDelivered;
+    
+    public event Action<bool> OnFlipping;
 
     private PanManager _panManager;
+    private bool _panSelected;
+    private InputManagerService _inputManagerService;
+    private bool _isFlipping = false;
 
     private void Awake()
     {
         _panManager = ServiceLocator.instance.GetService<PanManager>();
+        _inputManagerService = ServiceLocator.instance.GetService<InputManagerService>();
     }
     
-    void Start()
-    {
-        
-    }
-    
-    void Update()
-    {
-        
-    }
 
     private void OnEnable()
     {
         _panManager.OnPanSelected += OnPanSelected;
+        
+        _inputManagerService.OnPlaceDeliverFood += AddOrDeliverFood;
+        _inputManagerService.OnFlipFood += FlipPan;
     }
     
     private void OnDisable()
     {
         _panManager.OnPanSelected -= OnPanSelected;
+        
+        _inputManagerService.OnPlaceDeliverFood -= AddOrDeliverFood;
+        _inputManagerService.OnFlipFood -= FlipPan;
     }
 
     public void FlipPan()
     {
+        if (!_panSelected) return;
+
+        if (_isFlipping) return;
         
-    }
+        
+        _isFlipping = true;
 
-    public void AddFood(Food food)
-    {
-        _currentFood = food;
-    }
-
-    public void CompleteFood()
-    {
-        if (!_currentFood)
+        OnFlipping?.Invoke(_isFlipping);
+        
+        Invoke(nameof(ResumeFlipPermissions), Globals.FlipTime);
+        
+        //play flip animation
+        if (_currentFood)
         {
-            //notify there is no food in the pan
-            return;
+            _currentFood.SetFlipping(true);
+            _currentFood.FlipFood();
         }
+    }
+
+    private void AddOrDeliverFood()
+    {
+        if (!_panSelected) return;
+        if(_isFlipping) return;
         
-        OnFoodCompleted?.Invoke(_currentFood);
+        if (_currentFood)
+            DeliverFood();
+        else
+            AddFood();
+    }
+
+    public void AddFood()
+    {
+        
+        
+        
+        _currentFood = Instantiate(foodPrefab);
+        _currentFood.transform.position = foodSpawnPoint.position;
+        //test line only
+        _currentFood.SetFoodAndStartCooking(20,15,18);
+        OnFoodAdded?.Invoke(_currentFood);
+    }
+
+    public void DeliverFood()
+    {
+        _currentFood.DeliverFood();
+        
+        OnFoodDelivered?.Invoke(_currentFood);
+        
+        //test
+        Destroy(_currentFood.gameObject);
+        _currentFood = null;
+        
+    }
+    
+    public void ThrowFood()
+    {
+        if (!_currentFood) return;
+        Destroy(_currentFood.gameObject);
+        _currentFood = null;
     }
 
     private void OnPanSelected(Pan pan)
     {
-        panSelectionIndicator.SetActive(pan == this);
+        _panSelected = pan == this;
+        panSelectionIndicator.SetActive(_panSelected);
+    }
+
+    private void ResumeFlipPermissions()
+    {
+        _isFlipping = false;
+        _currentFood?.SetFlipping(false);
+
+        OnFlipping?.Invoke(_isFlipping);
     }
 
 }

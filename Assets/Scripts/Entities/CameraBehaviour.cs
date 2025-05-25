@@ -1,10 +1,9 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
 {
-    
+    [SerializeField] private float panPositionOffset;
     private PanManager _panManager;
 
     private void Awake()
@@ -19,18 +18,7 @@ public class CameraBehaviour : MonoBehaviour
 
     private void OnPanSelected(Pan pan)
     {
-        transform.DOMoveX(pan.transform.position.x, .5f).SetEase(Ease.OutBack);
+        transform.DOMoveX(pan.transform.position.x + panPositionOffset, .5f).SetEase(Ease.OutBack);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

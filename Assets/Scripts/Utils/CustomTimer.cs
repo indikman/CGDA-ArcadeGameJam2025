@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Timer
+public class CustomTimer
 {
     private float _timer = 0;
     private float _maxTime = 0;
