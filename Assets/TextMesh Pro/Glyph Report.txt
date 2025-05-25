@@ -1,0 +1,26 @@
+Font: Discoteca Rounded  Style: Regular
+Point Size: 84   Padding: 5   SP/PD Ratio: 6.0%
+
+Characters included: 85/99
+Missing characters: 14
+Excluded characters: 0
+
+Characters missing from font file:
+----------------------------------------
+ID: 34	Hex: 22	Char ["]
+ID: 35	Hex: 23	Char [#]
+ID: 42	Hex: 2A	Char [*]
+ID: 60	Hex: 3C	Char []
+ID: 62	Hex: 3E	Char [>]
+ID: 94	Hex: 5E	Char [^]
+ID: 95	Hex: 5F	Char [_]
+ID: 124	Hex: 7C	Char [|]
+ID: 125	Hex: 7D	Char [}]
+ID: 126	Hex: 7E	Char [~]
+ID: 160	Hex: A0	Char [ ]
+ID: 8203	Hex: 200B	Char [​]
+ID: 8230	Hex: 2026	Char […]
+ID: 9633	Hex: 25A1	Char [□]
+
+Characters excluded from packing:
+----------------------------------------

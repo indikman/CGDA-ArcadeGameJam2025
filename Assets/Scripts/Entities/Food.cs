@@ -11,24 +11,29 @@ public class Food : MonoBehaviour
     public float cookThresholdMax { get; private set; }
 
     public event Action OnFoodFlipped;
-    public event Action OnFoodDelivered;
+    public event Action<FoodState> OnFoodDelivered;
     public event Action<float> OnFoodBeingCooked;
 
     private bool _isCooking = false;
-    
     private bool _isFlipping = false;
-    
+    private bool _sideAIsCooked;
+    private bool _sideBIsCooked;
+    private bool _sideAIsBurned;
+    private bool _sideBIsBurned;
+
+    public FoodState currentState { get; private set; } = FoodState.NotCooked;
+
     public enum FoodSide
     {
         SideA,
         SideB
     }
 
-    public void SetFoodAndStartCooking(float timeToBurn, float cookThresholdMin, float cookThresholdMax)
+    public void SetFoodAndStartCooking(float mTimeToBurn, float mcookThresholdMin, float mcookThresholdMax)
     {
-        this.timeToBurn = timeToBurn;
-        this.cookThresholdMin = cookThresholdMin;
-        this.cookThresholdMax = cookThresholdMax;
+        timeToBurn = mTimeToBurn;
+        cookThresholdMin = mcookThresholdMin;
+        cookThresholdMax = mcookThresholdMax;
 
         sideACookValue = 0;
         sideBCookValue = 0;
@@ -44,7 +49,7 @@ public class Food : MonoBehaviour
 
     public void DeliverFood()
     {
-        OnFoodDelivered?.Invoke();
+        OnFoodDelivered?.Invoke(currentState);
     }
 
     public void SetFlipping(bool isFlipping)
@@ -75,6 +80,34 @@ public class Food : MonoBehaviour
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
+        }
+        
+        _sideAIsCooked = sideACookValue >= cookThresholdMin && sideACookValue <= cookThresholdMax;
+        _sideBIsCooked = sideBCookValue >= cookThresholdMin && sideBCookValue <= cookThresholdMax;
+
+        _sideAIsBurned = sideACookValue > cookThresholdMax && sideACookValue < timeToBurn;
+        _sideBIsBurned = sideBCookValue > cookThresholdMax && sideBCookValue < timeToBurn;
+
+        if (sideACookValue < cookThresholdMin && sideBCookValue < cookThresholdMin)
+        {
+            currentState = FoodState.NotCooked;
+        }
+        else if ((_sideAIsCooked && sideBCookValue < cookThresholdMin) || 
+                 (_sideBIsCooked && sideACookValue < cookThresholdMin))
+        {
+            currentState = FoodState.CookedOneSideOnly;
+        }
+        else if (_sideAIsCooked && _sideBIsCooked)
+        {
+            currentState = FoodState.CookedBothSides;
+        }
+        else if (_sideAIsBurned && _sideBIsBurned)
+        {
+            currentState = FoodState.Burned;
+        }
+        else if (_sideAIsBurned || _sideBIsBurned)
+        {
+            currentState = FoodState.OneSideBurned;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 public class Pan : MonoBehaviour
@@ -81,6 +82,9 @@ public class Pan : MonoBehaviour
         
         _currentFood = Instantiate(foodPrefab);
         _currentFood.transform.position = foodSpawnPoint.position;
+
+        _currentFood.transform.DOScale(0, 0.5f).From().SetEase(Ease.OutElastic, .8f);
+        
         //test line only
         _currentFood.SetFoodAndStartCooking(20,15,18);
         OnFoodAdded?.Invoke(_currentFood);

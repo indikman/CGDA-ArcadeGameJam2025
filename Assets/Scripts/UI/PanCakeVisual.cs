@@ -38,6 +38,7 @@ public class PanCakeVisual : MonoBehaviour
     {
         // food flip animation
         transform.DOJump(transform.position, 3, 1, .6f);
+        //transform.DOPunchScale(Vector2.one * _yScale, 0.5f, 10, 1f);
         transform.DOScaleY(_yScale * -1, 0.2f).SetEase(Ease.OutSine).SetLoops(2, LoopType.Yoyo);
     }
 

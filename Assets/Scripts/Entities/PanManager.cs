@@ -80,6 +80,8 @@ public class PanManager : MonoBehaviour
     public void RemovePan()
     {
         if (pans.Count <= 1) return;
+        
+        if(_currentPan._currentFood) Destroy(_currentPan._currentFood.gameObject);
 
         if (_currentPanIndex == pans.Count - 1)
         {
@@ -90,6 +92,7 @@ public class PanManager : MonoBehaviour
         }
         
         Destroy(pans[^1].gameObject);
+        
         pans.RemoveAt(pans.Count - 1);
         
     }
