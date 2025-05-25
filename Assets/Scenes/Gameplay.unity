@@ -2605,6 +2605,7 @@ GameObject:
   - component: {fileID: 1886324609}
   - component: {fileID: 1886324608}
   - component: {fileID: 1886324610}
+  - component: {fileID: 1886324611}
   m_Layer: 0
   m_Name: Visual UI
   m_TagString: Untagged
@@ -2656,6 +2657,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comboTime: 5
   comboTimeProgress: {fileID: 539268543}
+--- !u!114 &1886324611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886324606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a4e5532507bc46eba97b7634f1befe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 1371919586}
+  countDownObject: {fileID: 1178530376}
+  countDownText: {fileID: 1941614062}
 --- !u!1 &1941614060
 GameObject:
   m_ObjectHideFlags: 0

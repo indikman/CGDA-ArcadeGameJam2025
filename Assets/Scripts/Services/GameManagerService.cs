@@ -15,6 +15,8 @@ public class GameManagerService : MonoBehaviour
     private DayTimerService _dayTimerService;
     private InputManagerService _inputManagerService;
 
+    private AudioManagerService _audioManagerService;
+
     public event Action OnDayStart;
     public event Action<string> OnCountDown;
     public event Action OnGameStart;
@@ -29,6 +31,8 @@ public class GameManagerService : MonoBehaviour
     {
         _scoreManagerService = ServiceLocator.instance.GetService<ScoreManagerService>();
         _inputManagerService = ServiceLocator.instance.GetService<InputManagerService>();
+        _audioManagerService = ServiceLocator.instance.GetService<AudioManagerService>();
+        
         //_dayTimerService = ServiceLocator.instance.GetService<DayTimerService>();
     }
 
@@ -50,6 +54,8 @@ public class GameManagerService : MonoBehaviour
             _inputManagerService.DisableInput(true);
             GameOverUI.SetActive(true);
             GameOverText.text = "Your score: " + _scoreManagerService.GetScore();
+
+            _audioManagerService.PlayAudio("fail");
         }
     }
 
@@ -87,6 +93,8 @@ public class GameManagerService : MonoBehaviour
         OnCountDown?.Invoke("Go!");
         
         _inputManagerService.DisableInput(false);
+
+        OnGameStart?.Invoke();
 
         yield return null;
 

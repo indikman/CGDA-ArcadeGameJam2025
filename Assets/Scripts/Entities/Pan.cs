@@ -50,7 +50,8 @@ public class Pan : MonoBehaviour
         if (!_panSelected) return;
 
         if (_isFlipping) return;
-        
+
+        AudioManagerService.instance.PlayAudio("flip");
         
         _isFlipping = true;
 
@@ -83,10 +84,13 @@ public class Pan : MonoBehaviour
         _currentFood.transform.position = foodSpawnPoint.position;
 
         _currentFood.transform.DOScale(0, 0.5f).From().SetEase(Ease.OutElastic, .8f);
-        
+
         //test line only
-        _currentFood.SetFoodAndStartCooking(_gameManagerService._timeToBurn,_gameManagerService._timeToCookMin,_gameManagerService._timeToCookMax);
+        _currentFood.SetFoodAndStartCooking(_gameManagerService._timeToBurn, _gameManagerService._timeToCookMin, _gameManagerService._timeToCookMax);
         OnFoodAdded?.Invoke(_currentFood);
+        
+        AudioManagerService.instance.PlayAudio("addCake");
+
     }
 
     public void DeliverFood()

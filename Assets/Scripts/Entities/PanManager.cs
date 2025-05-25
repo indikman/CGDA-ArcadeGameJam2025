@@ -63,7 +63,7 @@ public class PanManager : MonoBehaviour
         _currentPan = pans[0];
         OnPanSelected?.Invoke(_currentPan);
     }
-    
+
     public void AddPan()
     {
         var newPan = Instantiate(panPrefab);
@@ -71,29 +71,34 @@ public class PanManager : MonoBehaviour
         newPan.transform.localPosition = new Vector3(originPanPosition.x + panSpacing * pans.Count, originPanPosition.y, 0);
 
         newPan.transform.DOMoveY(-10, .5f).From().SetEase(Ease.OutElastic, 1f);
-        
+
         pans.Add(newPan);
         OnPanAdded?.Invoke(newPan);
+        
+        AudioManagerService.instance.PlayAudio("shift");
+
 
     }
-    
+
     public void RemovePan()
     {
         if (pans.Count <= 1) return;
-        
-        if(_currentPan._currentFood) Destroy(_currentPan._currentFood.gameObject);
+
+        if (_currentPan._currentFood) Destroy(_currentPan._currentFood.gameObject);
 
         if (_currentPanIndex == pans.Count - 1)
         {
             _currentPanIndex = pans.Count - 2;
             _currentPan = pans[_currentPanIndex];
-            
+
             OnPanSelected?.Invoke(_currentPan);
         }
-        
+
         Destroy(pans[^1].gameObject);
-        
+
         pans.RemoveAt(pans.Count - 1);
+        
+        AudioManagerService.instance.PlayAudio("shift");
         
     }
 
@@ -106,8 +111,10 @@ public class PanManager : MonoBehaviour
         }
         _currentPan = pans[_currentPanIndex];
         OnPanSelected?.Invoke(_currentPan);
+        AudioManagerService.instance.PlayAudio("shift");
+
     }
-    
+
     public void PreviousPan()
     {
         _currentPanIndex--;
@@ -117,6 +124,8 @@ public class PanManager : MonoBehaviour
         }
         _currentPan = pans[_currentPanIndex];
         OnPanSelected?.Invoke(_currentPan);
+        AudioManagerService.instance.PlayAudio("shift");
+        
     }
     
     public Pan GetCurrentPan()

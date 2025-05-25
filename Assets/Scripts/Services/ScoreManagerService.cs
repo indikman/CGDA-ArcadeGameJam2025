@@ -31,6 +31,10 @@ public class ScoreManagerService : Singleton<ScoreManagerService>
     public event Action<FoodState> OnFoodAdded;
     public event Action OnDayStarted;
 
+    public AudioManagerService _audioManagerService;
+
+
+
     public ComboTimer ComboTimer;
     
 
@@ -60,6 +64,7 @@ public class ScoreManagerService : Singleton<ScoreManagerService>
                     OnBonusAdded?.Invoke(bonus);
                 }
                 ComboTimer.ResetCombo();
+                _audioManagerService.PlayAudio("successCake");
                 OnPanCakeAdded?.Invoke(_currentPanCakes, _requiredPanCakes);
                 break;
             case FoodState.OneSideBurned:
