@@ -1,6 +1,7 @@
 ﻿using System;
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PanCakeVisual : MonoBehaviour
 {
@@ -32,6 +33,17 @@ public class PanCakeVisual : MonoBehaviour
     {
         food.OnFoodBeingCooked += OnFoodBeingCooked;
         food.OnFoodFlipped += OnFoodFlipped;
+        food.OnFoodDelivered += OnFoodDelivered;
+    }
+
+    private void OnFoodDelivered(FoodState obj)
+    {
+        //run towards up
+        transform.DOMove(new Vector2(Random.Range(-10,Screen.width+10), Screen.height+10), 10f).SetEase(Ease.OutQuad).OnComplete(
+            () =>
+            {
+               // GameObject.Destroy(food);
+            });
     }
 
     private void OnFoodFlipped()

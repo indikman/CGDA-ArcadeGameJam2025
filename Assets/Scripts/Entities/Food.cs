@@ -22,6 +22,13 @@ public class Food : MonoBehaviour
     private bool _sideBIsBurned;
 
     public FoodState currentState { get; private set; } = FoodState.NotCooked;
+    
+    private ScoreManagerService _scoreManagerService;
+    
+    private void Awake()
+    {
+        _scoreManagerService = ServiceLocator.instance.GetService<ScoreManagerService>();
+    }
 
     public enum FoodSide
     {
@@ -49,6 +56,7 @@ public class Food : MonoBehaviour
 
     public void DeliverFood()
     {
+        _scoreManagerService.AddScoreForFood(currentState);
         OnFoodDelivered?.Invoke(currentState);
     }
 
